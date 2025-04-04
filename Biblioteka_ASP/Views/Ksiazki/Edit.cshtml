@@ -1,0 +1,50 @@
+﻿@model Biblioteka_ASP.Models.Ksiazki
+
+@{
+    ViewData["Title"] = "Edytuj Książkę";
+}
+
+<h2>Edytuj Książkę</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="ID_Ksiazki" />
+    <div class="form-group">
+        <label asp-for="Tytul" class="control-label">Tytuł</label>
+        <input asp-for="Tytul" class="form-control" />
+        <span asp-validation-for="Tytul" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Autor" class="control-label">Autor</label>
+        <input asp-for="Autor" class="form-control" />
+        <span asp-validation-for="Autor" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Rok_Wydania" class="control-label">Rok Wydania</label>
+        <input asp-for="Rok_Wydania" class="form-control" />
+        <span asp-validation-for="Rok_Wydania" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ID_Gatunku" class="control-label">Gatunek</label>
+        <select asp-for="ID_Gatunku" class="form-control" asp-items="ViewBag.Gatunki"></select>
+        <span asp-validation-for="ID_Gatunku" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Ilosc_Dostepna" class="control-label">Ilość Dostępna</label>
+        <input asp-for="Ilosc_Dostepna" class="form-control" />
+        <span asp-validation-for="Ilosc_Dostepna" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Zapisz" class="btn btn-success" />
+        <a asp-action="Index" class="btn btn-secondary">Powrót</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+

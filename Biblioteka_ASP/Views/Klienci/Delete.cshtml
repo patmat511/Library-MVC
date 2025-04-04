@@ -1,0 +1,28 @@
+﻿@model Biblioteka_ASP.Models.Klienci
+
+@{
+    ViewData["Title"] = "Usuń Klienta";
+}
+
+<h2>Usuń Klienta</h2>
+
+<h3>Czy na pewno chcesz usunąć tego klienta?</h3>
+
+<div>
+    <h4>@Model.Imie</h4>
+    <dl class="row">
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+        <dt class="col-sm-2">Telefon</dt>
+        <dd class="col-sm-10">@Model.Telefon</dd>
+        <dt class="col-sm-2">Adres</dt>
+        <dd class="col-sm-10">@Model.Adres</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.ID_Klienta" />
+        <input type="submit" value="Usuń" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Powrót</a>
+    </form>
+</div>

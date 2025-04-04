@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Biblioteka_ASP.Models.Gatunki>
+
+@{
+    ViewData["Title"] = "Lista Gatunków";
+}
+
+<h2>Lista Gatunków</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Dodaj nowy gatunek</a>
+</p>
+
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Gatunek</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var gatunek in Model)
+            {
+                <tr>
+                    <td>@gatunek.Gatunek</td>
+                    <td>         
+                        <a asp-action="Edit" asp-route-id="@gatunek.ID_Gatunku " class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i> Edytuj
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@gatunek.ID_Gatunku " class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Usuń
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="2" class="text-center">Brak gatunków w bazie danych.</td>
+            </tr>
+        }
+    </tbody>
+</table>

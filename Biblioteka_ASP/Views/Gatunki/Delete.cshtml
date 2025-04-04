@@ -1,0 +1,19 @@
+﻿@model Biblioteka_ASP.Models.Gatunki
+
+@{
+    ViewData["Title"] = "Usuń Gatunek";
+}
+
+<h2>Usuń Gatunek</h2>
+
+<h3>Czy na pewno chcesz usunąć ten gatunek?</h3>
+
+<div>
+    <h4>@Model.Gatunek</h4>
+    <form asp-action="Delete" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.ID_Gatunku" />
+        <input type="submit" value="Usuń" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Powrót</a>
+    </form>
+</div>

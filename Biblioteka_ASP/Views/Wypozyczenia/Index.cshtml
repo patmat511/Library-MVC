@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Biblioteka_ASP.Models.Wypozyczenia>
+
+@{
+    ViewData["Title"] = "Lista Wypożyczeń";
+}
+
+<h2>Lista Wypożyczeń</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Dodaj nowe wypożyczenie</a>
+</p>
+
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Książka</th>
+            <th>Klient</th>
+            <th>Data Wypożyczenia</th>
+            <th>Data Zwrotu</th>
+            <th>Kara</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var wypozyczenie in Model)
+            {
+                <tr>
+                    <td>@(wypozyczenie.Ksiazki?.Tytul ?? "Brak książki")</td>
+                    <td>@(wypozyczenie.Klienci?.Imie ?? "Brak klienta")</td>
+                    <td>@wypozyczenie.Data_Wypozyczenia.ToString("yyyy-MM-dd")</td>
+                    <td>@wypozyczenie.Data_Zwrotu.ToString("yyyy-MM-dd")</td>
+                    <td>@wypozyczenie.Kara</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@wypozyczenie.ID_Wypozyczenia" class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i> Edytuj
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@wypozyczenie.ID_Wypozyczenia" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Usuń
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">Brak wypożyczeń w bazie danych.</td>
+            </tr>
+        }
+    </tbody>
+</table>
