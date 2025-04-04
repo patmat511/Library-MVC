@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Biblioteka_ASP.ViewModels
+﻿namespace Biblioteka_ASP.ViewModels
 {
     public class KlienciViewModel
     {
@@ -12,3 +10,4 @@ namespace Biblioteka_ASP.ViewModels
         public int LiczbaWypozyczen { get; set; }
     }
 }
+

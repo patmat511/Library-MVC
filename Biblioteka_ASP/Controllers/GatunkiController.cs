@@ -1,5 +1,6 @@
 ﻿using Biblioteka_ASP.Models;
 using Biblioteka_ASP.Services.Interfaces;
+using Biblioteka_ASP.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -19,27 +20,37 @@ namespace Biblioteka_ASP.Controllers
         public async Task<IActionResult> Index()
         {
             var gatunki = await _gatunkiService.GetAllAsync();
-            return View(gatunki);
+            var gatunkiViewModel = gatunki.Select(g => new GatunkiViewModel
+            {
+                ID_Gatunku = g.ID_Gatunku,
+                Gatunek = g.Gatunek,
+                LiczbaKsiazek = g.Ksiazki?.Count ?? 0
+            }).ToList();
+            return View(gatunkiViewModel);
         }
 
         // GET: Gatunki/Create
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            return View(new GatunkiViewModel());
         }
 
         // POST: Gatunki/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Gatunki gatunek)
+        public async Task<IActionResult> Create(GatunkiViewModel gatunekViewModel)
         {
             if (ModelState.IsValid)
             {
+                var gatunek = new Gatunki
+                {
+                    Gatunek = gatunekViewModel.Gatunek
+                };
                 await _gatunkiService.AddAsync(gatunek);
                 return RedirectToAction(nameof(Index));
             }
-            return View(gatunek);
+            return View(gatunekViewModel);
         }
 
         // GET: Gatunki/Edit/5
@@ -51,15 +62,22 @@ namespace Biblioteka_ASP.Controllers
             {
                 return NotFound();
             }
-            return View(gatunek);
+
+            var gatunekViewModel = new GatunkiViewModel
+            {
+                ID_Gatunku = gatunek.ID_Gatunku,
+                Gatunek = gatunek.Gatunek,
+                LiczbaKsiazek = gatunek.Ksiazki?.Count ?? 0
+            };
+            return View(gatunekViewModel);
         }
 
         // POST: Gatunki/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Gatunki gatunek)
+        public async Task<IActionResult> Edit(int id, GatunkiViewModel gatunekViewModel)
         {
-            if (id != gatunek.ID_Gatunku)
+            if (id != gatunekViewModel.ID_Gatunku)
             {
                 return NotFound();
             }
@@ -68,6 +86,13 @@ namespace Biblioteka_ASP.Controllers
             {
                 try
                 {
+                    var gatunek = await _gatunkiService.GetByIdAsync(id);
+                    if (gatunek == null)
+                    {
+                        return NotFound();
+                    }
+
+                    gatunek.Gatunek = gatunekViewModel.Gatunek;
                     await _gatunkiService.UpdateAsync(gatunek);
                 }
                 catch
@@ -80,7 +105,7 @@ namespace Biblioteka_ASP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(gatunek);
+            return View(gatunekViewModel);
         }
 
         // GET: Gatunki/Delete/5
@@ -92,7 +117,14 @@ namespace Biblioteka_ASP.Controllers
             {
                 return NotFound();
             }
-            return View(gatunek);
+
+            var gatunekViewModel = new GatunkiViewModel
+            {
+                ID_Gatunku = gatunek.ID_Gatunku,
+                Gatunek = gatunek.Gatunek,
+                LiczbaKsiazek = gatunek.Ksiazki?.Count ?? 0
+            };
+            return View(gatunekViewModel);
         }
 
         // POST: Gatunki/Delete/5
