@@ -1,6 +1,8 @@
 ﻿using Biblioteka_ASP.Models;
 using Biblioteka_ASP.Services.Interfaces;
+using Biblioteka_ASP.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Biblioteka_ASP.Controllers
@@ -17,9 +19,28 @@ namespace Biblioteka_ASP.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int? pageNumber)
         {
-            int pageSize = 5; 
-            var klienci = await _klienciService.GetPaginatedListAsync(pageNumber ?? 1, pageSize);
-            return View(klienci);
+            int pageSize = 5;
+            var paginatedKlienci = await _klienciService.GetPaginatedListAsync(pageNumber ?? 1, pageSize);
+
+            // Mapowanie PaginatedList<Klienci> na PaginatedList<KlienciViewModel>
+            var klienciViewModelList = paginatedKlienci.Items.Select(k => new KlienciViewModel
+            {
+                ID_Klienta = k.ID_Klienta,
+                Imie = k.Imie,
+                Email = k.Email,
+                Telefon = k.Telefon,
+                Adres = k.Adres,
+                LiczbaWypozyczen = k.Wypozyczenia?.Count ?? 0
+            }).ToList();
+
+            var paginatedViewModel = new PaginatedList<KlienciViewModel>(
+                klienciViewModelList,
+                paginatedKlienci.Items.Count,
+                paginatedKlienci.PageIndex,
+                paginatedKlienci.PageSize
+            );
+
+            return View(paginatedViewModel);
         }
 
         // GET: Klienci/Details/5
@@ -31,27 +52,44 @@ namespace Biblioteka_ASP.Controllers
             {
                 return NotFound();
             }
-            return View(klient);
+
+            var klientViewModel = new KlienciViewModel
+            {
+                ID_Klienta = klient.ID_Klienta,
+                Imie = klient.Imie,
+                Email = klient.Email,
+                Telefon = klient.Telefon,
+                Adres = klient.Adres,
+                LiczbaWypozyczen = klient.Wypozyczenia?.Count ?? 0
+            };
+            return View(klientViewModel);
         }
 
         // GET: Klienci/Create
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            return View(new KlienciViewModel());
         }
 
         // POST: Klienci/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Klienci klient)
+        public async Task<IActionResult> Create(KlienciViewModel klientViewModel)
         {
             if (ModelState.IsValid)
             {
+                var klient = new Klienci
+                {
+                    Imie = klientViewModel.Imie,
+                    Email = klientViewModel.Email,
+                    Telefon = klientViewModel.Telefon,
+                    Adres = klientViewModel.Adres
+                };
                 await _klienciService.AddAsync(klient);
                 return RedirectToAction(nameof(Index));
             }
-            return View(klient);
+            return View(klientViewModel);
         }
 
         // GET: Klienci/Edit/5
@@ -63,15 +101,25 @@ namespace Biblioteka_ASP.Controllers
             {
                 return NotFound();
             }
-            return View(klient);
+
+            var klientViewModel = new KlienciViewModel
+            {
+                ID_Klienta = klient.ID_Klienta,
+                Imie = klient.Imie,
+                Email = klient.Email,
+                Telefon = klient.Telefon,
+                Adres = klient.Adres,
+                LiczbaWypozyczen = klient.Wypozyczenia?.Count ?? 0
+            };
+            return View(klientViewModel);
         }
 
         // POST: Klienci/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Klienci klient)
+        public async Task<IActionResult> Edit(int id, KlienciViewModel klientViewModel)
         {
-            if (id != klient.ID_Klienta)
+            if (id != klientViewModel.ID_Klienta)
             {
                 return NotFound();
             }
@@ -80,6 +128,17 @@ namespace Biblioteka_ASP.Controllers
             {
                 try
                 {
+                    var klient = await _klienciService.GetByIdAsync(id);
+                    if (klient == null)
+                    {
+                        return NotFound();
+                    }
+
+                    klient.Imie = klientViewModel.Imie;
+                    klient.Email = klientViewModel.Email;
+                    klient.Telefon = klientViewModel.Telefon;
+                    klient.Adres = klientViewModel.Adres;
+
                     await _klienciService.UpdateAsync(klient);
                 }
                 catch
@@ -92,7 +151,7 @@ namespace Biblioteka_ASP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(klient);
+            return View(klientViewModel);
         }
 
         // GET: Klienci/Delete/5
@@ -104,7 +163,17 @@ namespace Biblioteka_ASP.Controllers
             {
                 return NotFound();
             }
-            return View(klient);
+
+            var klientViewModel = new KlienciViewModel
+            {
+                ID_Klienta = klient.ID_Klienta,
+                Imie = klient.Imie,
+                Email = klient.Email,
+                Telefon = klient.Telefon,
+                Adres = klient.Adres,
+                LiczbaWypozyczen = klient.Wypozyczenia?.Count ?? 0
+            };
+            return View(klientViewModel);
         }
 
         // POST: Klienci/Delete/5
