@@ -11,5 +11,6 @@ namespace Biblioteka_ASP.Services.Interfaces
         Task AddAsync(Gatunki gatunek);
         Task UpdateAsync(Gatunki gatunek);
         Task DeleteAsync(int id);
+        // test
     }
 }
