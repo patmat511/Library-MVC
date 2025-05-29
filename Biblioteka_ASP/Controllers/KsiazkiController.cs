@@ -34,7 +34,7 @@ namespace Biblioteka_ASP.Controllers
                     Ilosc_Dostepna = k.Ilosc_Dostepna,
                     LiczbaWypozyczen = k.Wypozyczenia?.Count ?? 0
                 }).ToList(),
-                paginatedList.Items.Count,
+                paginatedList.TotalCount,
                 paginatedList.PageIndex,
                 paginatedList.PageSize
             );
@@ -43,9 +43,9 @@ namespace Biblioteka_ASP.Controllers
             return View(paginatedViewModel);
         }
 
-        //public async Task<IActionResult> Create()
+        //public IActionResult Create()
         //{
-        //    //return View(new KsiazkiViewModel());
+        //    return View(KsiazkiViewModel);
         //}
 
         [HttpPost]

@@ -17,12 +17,11 @@ namespace Biblioteka_ASP.Repositories.Classes
             _context = context;
         }
 
-        public async Task<IEnumerable<Wypozyczenia>> GetAllAsync()
+        public IQueryable<Wypozyczenia> GetAllAsync()
         {
-            return await _context.Wypozyczenia
+            return _context.Wypozyczenia
                 .Include(w => w.Ksiazki)
-                .Include(w => w.Klienci)
-                .ToListAsync();
+                .Include(w => w.Klienci);
         }
 
         public async Task<Wypozyczenia> GetByIdAsync(int id)
@@ -66,4 +65,3 @@ namespace Biblioteka_ASP.Repositories.Classes
         }
     }
 }
-

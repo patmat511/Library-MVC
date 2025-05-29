@@ -6,7 +6,8 @@ namespace Biblioteka_ASP.Services.Interfaces
 {
     public interface IGatunkiService
     {
-        Task<IEnumerable<Gatunki>> GetAllAsync();
+        IQueryable<Gatunki> GetAll();
+        Task<PaginatedList<Gatunki>> GetPaginatedListAsync(int pageNumber, int pageSize);
         Task<Gatunki> GetByIdAsync(int id);
         Task AddAsync(Gatunki gatunek);
         Task UpdateAsync(Gatunki gatunek);

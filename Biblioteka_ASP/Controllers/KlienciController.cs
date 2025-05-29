@@ -17,10 +17,10 @@ namespace Biblioteka_ASP.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int? pageNumber)
+        public IActionResult Index(int? pageNumber)
         {
             int pageSize = 5;
-            var paginatedKlienci = await _klienciService.GetPaginatedListAsync(pageNumber ?? 1, pageSize);
+            var paginatedKlienci = _klienciService.GetPaginatedList(pageNumber ?? 1, pageSize);
 
             // Mapowanie PaginatedList<Klienci> na PaginatedList<KlienciViewModel>
             var klienciViewModelList = paginatedKlienci.Items.Select(k => new KlienciViewModel
@@ -35,7 +35,7 @@ namespace Biblioteka_ASP.Controllers
 
             var paginatedViewModel = new PaginatedList<KlienciViewModel>(
                 klienciViewModelList,
-                paginatedKlienci.Items.Count,
+                paginatedKlienci.TotalPages * pageSize, // Calculating total count since we don't have direct access to it
                 paginatedKlienci.PageIndex,
                 paginatedKlienci.PageSize
             );

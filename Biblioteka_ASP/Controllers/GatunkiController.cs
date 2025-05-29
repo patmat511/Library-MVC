@@ -2,6 +2,7 @@
 using Biblioteka_ASP.Services.Interfaces;
 using Biblioteka_ASP.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Biblioteka_ASP.Controllers
@@ -17,16 +18,29 @@ namespace Biblioteka_ASP.Controllers
 
         // GET: Gatunki
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int? pageNumber = 1, int pageSize = 10)
         {
-            var gatunki = await _gatunkiService.GetAllAsync();
-            var gatunkiViewModel = gatunki.Select(g => new GatunkiViewModel
+            var gatunki = _gatunkiService.GetAll();
+
+            // Create paginated list if needed
+            var paginatedGatunki = PaginatedList<Gatunki>.Create(gatunki, pageNumber ?? 1, pageSize);
+
+            var gatunkiViewModel = paginatedGatunki.Items.Select(g => new GatunkiViewModel
             {
                 ID_Gatunku = g.ID_Gatunku,
                 Gatunek = g.Gatunek,
                 LiczbaKsiazek = g.Ksiazki?.Count ?? 0
             }).ToList();
-            return View(gatunkiViewModel);
+
+            // Create a view model for pagination if needed
+            var paginatedViewModel = new PaginatedList<GatunkiViewModel>(
+                gatunkiViewModel,
+                paginatedGatunki.TotalPages * pageSize,
+                paginatedGatunki.PageIndex,
+                paginatedGatunki.PageSize
+            );
+
+            return View(paginatedViewModel);
         }
 
         // GET: Gatunki/Create

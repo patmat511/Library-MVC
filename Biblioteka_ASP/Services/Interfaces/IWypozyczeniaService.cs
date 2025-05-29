@@ -1,12 +1,13 @@
 ﻿using Biblioteka_ASP.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Biblioteka_ASP.Services.Interfaces
 {
     public interface IWypozyczeniaService
     {
-        Task<IEnumerable<Wypozyczenia>> GetAllAsync();
+        IQueryable<Wypozyczenia> GetAll();
         Task<Wypozyczenia> GetByIdAsync(int id);
         Task AddAsync(Wypozyczenia wypozyczenie);
         Task UpdateAsync(Wypozyczenia wypozyczenie);
