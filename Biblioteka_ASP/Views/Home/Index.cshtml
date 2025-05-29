@@ -1,8 +1,52 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Witamy w systemie Biblioteki";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+
+    <div class="text-center mb-5">
+        <h1 class="display-4 text-primary font-weight-bold">Witamy w Systemie Bibliotecznym</h1>
+        <p class="lead text-secondary">Nowoczesna platforma do zarządzania książkami, klientami i wypożyczeniami</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5 text-center">
+                    <i class="fas fa-book-open fa-4x text-primary mb-4"></i>
+                    <h4 class="font-weight-bold mb-3">Gotowy na rozpoczęcie?</h4>
+                    <p class="text-muted mb-4">Zaloguj się, aby zarządzać zasobami biblioteki.</p>
+
+                    <div class="d-grid gap-2 d-md-block">
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-lg mx-2">
+                            <i class="fas fa-sign-in-alt"></i> Zaloguj się
+                        </a>
+                        <a asp-controller="Home" asp-action="Contact" class="btn btn-outline-secondary btn-lg mx-2">
+                            <i class="fas fa-info-circle"></i> Kontakt / Pomoc
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row text-center mt-5">
+        <div class="col-md-4">
+            <i class="fas fa-user-shield fa-2x text-success mb-2"></i>
+            <h5 class="font-weight-bold">Bezpieczeństwo</h5>
+            <p class="text-muted">Role, autoryzacja i ochrona danych użytkowników.</p>
+        </div>
+        <div class="col-md-4">
+            <i class="fas fa-cogs fa-2x text-info mb-2"></i>
+            <h5 class="font-weight-bold">Zarządzanie</h5>
+            <p class="text-muted">Łatwe w obsłudze panele dla administratorów i pracowników.</p>
+        </div>
+        <div class="col-md-4">
+            <i class="fas fa-chart-line fa-2x text-warning mb-2"></i>
+            <h5 class="font-weight-bold">Rozwój</h5>
+            <p class="text-muted">Elastyczna architektura gotowa na dalszą rozbudowę.</p>
+        </div>
+    </div>
+
 </div>
