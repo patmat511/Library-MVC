@@ -1,14 +1,26 @@
 ﻿@model Biblioteka_ASP.Models.PaginatedList<Biblioteka_ASP.ViewModels.KlienciViewModel>
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Lista Klientów";
+    ViewData["Title"] = Localizer["ClientsListTitle"];
 }
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
-    <a asp-action="Create" class="btn btn-success btn-sm">
-        <i class="fas fa-plus"></i> Dodaj nowego klienta
-    </a>
+    <div class="d-flex align-items-center">
+        <form asp-action="SetLanguage" asp-controller="Home" method="post" class="form-inline mr-3">
+            <label for="languageSelect" class="mr-2">@Localizer["SelectLanguage"]</label>
+            <select id="languageSelect" name="culture" class="form-control form-control-sm" onchange="this.form.submit()">
+                <option value="pl-PL" selected="@(CultureInfo.CurrentCulture.Name == "pl-PL")">@Localizer["Polish"]</option>
+                <option value="es-ES" selected="@(CultureInfo.CurrentCulture.Name == "es-ES")">@Localizer["Spanish"]</option>
+                <option value="de-DE" selected="@(CultureInfo.CurrentCulture.Name == "de-DE")">@Localizer["German"]</option>
+            </select>
+            <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+        </form>
+        <a asp-action="Create" class="btn btn-success btn-sm">
+            <i class="fas fa-plus"></i> @Localizer["AddNewClient"]
+        </a>
+    </div>
 </div>
 <div class="card shadow mb-4">
     <div class="card-body">
@@ -16,11 +28,11 @@
             <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Imię</th>
-                        <th>Email</th>
-                        <th>Telefon</th>
-                        <th>Adres</th>
-                        <th>Akcje</th>
+                        <th>@Localizer["FirstName"]</th>
+                        <th>@Localizer["Email"]</th>
+                        <th>@Localizer["Phone"]</th>
+                        <th>@Localizer["Address"]</th>
+                        <th>@Localizer["Actions"]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,10 +47,10 @@
                                 <td>@klient.Adres</td>
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@klient.ID_Klienta" class="btn btn-warning btn-sm mr-1">
-                                        <i class="fas fa-edit"></i> Edytuj
+                                        <i class="fas fa-edit"></i> @Localizer["Edit"]
                                     </a>
                                     <a asp-action="Delete" asp-route-id="@klient.ID_Klienta" class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i> Usuń
+                                        <i class="fas fa-trash"></i> @Localizer["Delete"]
                                     </a>
                                 </td>
                             </tr>
@@ -47,7 +59,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="5" class="text-center">Brak klientów w bazie danych.</td>
+                            <td colspan="5" class="text-center">@Localizer["NoClientsMessage"]</td>
                         </tr>
                     }
                 </tbody>
@@ -63,7 +75,7 @@
             @if (Model.HasPreviousPage)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-searchString="@ViewData["CurrentFilter"]">Poprzednia</a>
+                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-searchString="@ViewData["CurrentFilter"]">@Localizer["Previous"]</a>
                 </li>
             }
             @for (int i = 1; i <= Model.TotalPages; i++)
@@ -75,7 +87,7 @@
             @if (Model.HasNextPage)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-searchString="@ViewData["CurrentFilter"]">Następna</a>
+                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-searchString="@ViewData["CurrentFilter"]">@Localizer["Next"]</a>
                 </li>
             }
         </ul>

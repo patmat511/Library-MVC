@@ -8,6 +8,8 @@ using Biblioteka_ASP.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 
 
@@ -17,6 +19,24 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<BibliotekaDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
+    {
+                    new CultureInfo("pl"),
+                    new CultureInfo("de"),
+                    new CultureInfo("es")
+                };
+
+    options.DefaultRequestCulture = new RequestCulture("pl");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+
+    options.RequestCultureProviders.Insert(0, new CookieRequestCultureProvider());
+});
 
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
