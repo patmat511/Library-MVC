@@ -9,6 +9,8 @@ Books are associated with categories through a one-to-many relationship, allowin
 
 This project serves as a practical demonstration of how to implement separation of concerns using MVC architecture, repositories, and services within a single ASP.NET Core application.
 
+![image](https://github.com/user-attachments/assets/5c33eeec-7803-47fe-836f-49e07c3d56cf)
+
 ---
 
 ## 🚀 How to Run the Application
