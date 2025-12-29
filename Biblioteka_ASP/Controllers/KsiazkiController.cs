@@ -33,7 +33,7 @@ namespace Biblioteka_ASP.Controllers
                     NazwaGatunku = k.Gatunki?.Gatunek ?? "Brak gatunku",
                     Ilosc_Dostepna = k.Ilosc_Dostepna,
                     LiczbaWypozyczen = k.Wypozyczenia?.Count ?? 0
-                }).ToList(),
+                }).ToListAsync(),
                 paginatedList.TotalCount,
                 paginatedList.PageIndex,
                 paginatedList.PageSize
