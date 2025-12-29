@@ -2,6 +2,7 @@
 using Biblioteka_ASP.Repositories.Interfaces;
 using Biblioteka_ASP.Services.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Biblioteka_ASP.Services
@@ -15,9 +16,9 @@ namespace Biblioteka_ASP.Services
             _wypozyczeniaRepository = wypozyczeniaRepository;
         }
 
-        public async Task<IEnumerable<Wypozyczenia>> GetAllAsync()
+        public IQueryable<Wypozyczenia> GetAll()
         {
-            return await _wypozyczeniaRepository.GetAllAsync();
+            return _wypozyczeniaRepository.GetAllAsync();
         }
 
         public async Task<Wypozyczenia> GetByIdAsync(int id)

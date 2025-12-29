@@ -1,4 +1,4 @@
-﻿@model Biblioteka_ASP.Models.PaginatedList<Biblioteka_ASP.Models.Ksiazki>
+﻿@model Biblioteka_ASP.Models.PaginatedList<Biblioteka_ASP.ViewModels.KsiazkiViewModel>
 
 @{
     ViewData["Title"] = "Lista Książek";
@@ -37,7 +37,7 @@
                     <td>@ksiazka.Tytul</td>
                     <td>@ksiazka.Autor</td>
                     <td>@ksiazka.Rok_Wydania</td>
-                    <td>@(ksiazka.Gatunki?.Gatunek ?? "Brak gatunku")</td>
+                    <td>@(ksiazka.NazwaGatunku)</td>
                     <td>@ksiazka.Ilosc_Dostepna</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@ksiazka.ID_Ksiazki" class="btn btn-warning btn-sm">Edytuj</a>

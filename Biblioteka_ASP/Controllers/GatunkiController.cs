@@ -1,6 +1,8 @@
 ﻿using Biblioteka_ASP.Models;
 using Biblioteka_ASP.Services.Interfaces;
+using Biblioteka_ASP.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Biblioteka_ASP.Controllers
@@ -16,30 +18,53 @@ namespace Biblioteka_ASP.Controllers
 
         // GET: Gatunki
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int? pageNumber = 1, int pageSize = 10)
         {
-            var gatunki = await _gatunkiService.GetAllAsync();
-            return View(gatunki);
+            var gatunki = _gatunkiService.GetAll();
+
+            // Create paginated list if needed
+            var paginatedGatunki = PaginatedList<Gatunki>.Create(gatunki, pageNumber ?? 1, pageSize);
+
+            var gatunkiViewModel = paginatedGatunki.Items.Select(g => new GatunkiViewModel
+            {
+                ID_Gatunku = g.ID_Gatunku,
+                Gatunek = g.Gatunek,
+                LiczbaKsiazek = g.Ksiazki?.Count ?? 0
+            }).ToList();
+
+            // Create a view model for pagination if needed
+            var paginatedViewModel = new PaginatedList<GatunkiViewModel>(
+                gatunkiViewModel,
+                paginatedGatunki.TotalPages * pageSize,
+                paginatedGatunki.PageIndex,
+                paginatedGatunki.PageSize
+            );
+
+            return View(paginatedViewModel);
         }
 
         // GET: Gatunki/Create
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            return View(new GatunkiViewModel());
         }
 
         // POST: Gatunki/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Gatunki gatunek)
+        public async Task<IActionResult> Create(GatunkiViewModel gatunekViewModel)
         {
             if (ModelState.IsValid)
             {
+                var gatunek = new Gatunki
+                {
+                    Gatunek = gatunekViewModel.Gatunek
+                };
                 await _gatunkiService.AddAsync(gatunek);
                 return RedirectToAction(nameof(Index));
             }
-            return View(gatunek);
+            return View(gatunekViewModel);
         }
 
         // GET: Gatunki/Edit/5
@@ -51,15 +76,22 @@ namespace Biblioteka_ASP.Controllers
             {
                 return NotFound();
             }
-            return View(gatunek);
+
+            var gatunekViewModel = new GatunkiViewModel
+            {
+                ID_Gatunku = gatunek.ID_Gatunku,
+                Gatunek = gatunek.Gatunek,
+                LiczbaKsiazek = gatunek.Ksiazki?.Count ?? 0
+            };
+            return View(gatunekViewModel);
         }
 
         // POST: Gatunki/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Gatunki gatunek)
+        public async Task<IActionResult> Edit(int id, GatunkiViewModel gatunekViewModel)
         {
-            if (id != gatunek.ID_Gatunku)
+            if (id != gatunekViewModel.ID_Gatunku)
             {
                 return NotFound();
             }
@@ -68,6 +100,13 @@ namespace Biblioteka_ASP.Controllers
             {
                 try
                 {
+                    var gatunek = await _gatunkiService.GetByIdAsync(id);
+                    if (gatunek == null)
+                    {
+                        return NotFound();
+                    }
+
+                    gatunek.Gatunek = gatunekViewModel.Gatunek;
                     await _gatunkiService.UpdateAsync(gatunek);
                 }
                 catch
@@ -80,7 +119,7 @@ namespace Biblioteka_ASP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(gatunek);
+            return View(gatunekViewModel);
         }
 
         // GET: Gatunki/Delete/5
@@ -92,7 +131,14 @@ namespace Biblioteka_ASP.Controllers
             {
                 return NotFound();
             }
-            return View(gatunek);
+
+            var gatunekViewModel = new GatunkiViewModel
+            {
+                ID_Gatunku = gatunek.ID_Gatunku,
+                Gatunek = gatunek.Gatunek,
+                LiczbaKsiazek = gatunek.Ksiazki?.Count ?? 0
+            };
+            return View(gatunekViewModel);
         }
 
         // POST: Gatunki/Delete/5

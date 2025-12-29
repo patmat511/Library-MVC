@@ -1,0 +1,36 @@
+﻿@model Biblioteka_ASP.ViewModels.EditUserRolesViewModel
+@{
+    ViewData["Title"] = "Edycja ról użytkownika";
+}
+
+<h2>@ViewData["Title"]</h2>
+<h4>Użytkownik: @Model.Email</h4>
+
+<form asp-action="EditRoles" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="Email" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label>Obecne role: </label>
+        <p>@string.Join(", ", Model.CurrentRoles)</p>
+    </div>
+
+    <div class="form-group">
+        <label>Wybierz nowe role:</label>
+        @foreach (var role in Model.AvailableRoles)
+        {
+            <div class="form-check">
+                <input type="checkbox"
+                       name="SelectedRoles"
+                       value="@role"
+                       class="form-check-input"
+                @(Model.CurrentRoles.Contains(role) ? "checked" : "") />
+                <label class="form-check-label">@role</label>
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">Zapisz</button>
+    <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+</form>

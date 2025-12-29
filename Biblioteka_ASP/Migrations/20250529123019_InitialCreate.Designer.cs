@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Biblioteka_ASP.Migrations
 {
     [DbContext(typeof(BibliotekaDbContext))]
-    [Migration("20250307052402_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20250529123019_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

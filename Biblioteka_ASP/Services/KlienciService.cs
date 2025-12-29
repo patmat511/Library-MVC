@@ -1,7 +1,7 @@
 ﻿using Biblioteka_ASP.Models;
 using Biblioteka_ASP.Repositories.Interfaces;
 using Biblioteka_ASP.Services.Interfaces;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Biblioteka_ASP.Services
@@ -15,14 +15,14 @@ namespace Biblioteka_ASP.Services
             _klienciRepository = klienciRepository;
         }
 
-        public async Task<IEnumerable<Klienci>> GetAllAsync()
+        public IQueryable<Klienci> GetAll()
         {
-            return await _klienciRepository.GetAllAsync();
+            return _klienciRepository.GetAll();
         }
 
-        public async Task<PaginatedList<Klienci>> GetPaginatedListAsync(int pageNumber, int pageSize)
+        public PaginatedList<Klienci> GetPaginatedList(int pageNumber, int pageSize)
         {
-            var klienci = await _klienciRepository.GetAllAsync();
+            var klienci = GetAll();
             return PaginatedList<Klienci>.Create(klienci, pageNumber, pageSize);
         }
 

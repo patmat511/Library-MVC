@@ -2,6 +2,9 @@
 using Biblioteka_ASP.Models;
 using Biblioteka_ASP.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Biblioteka_ASP.Repositories.Classes
 {
@@ -12,6 +15,11 @@ namespace Biblioteka_ASP.Repositories.Classes
         public KlienciRepository(BibliotekaDbContext context)
         {
             _context = context;
+        }
+
+        public IQueryable<Klienci> GetAll()
+        {
+            return _context.Klienci;
         }
 
         public async Task<IEnumerable<Klienci>> GetAllAsync()

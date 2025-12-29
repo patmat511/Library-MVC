@@ -1,7 +1,7 @@
 ﻿using Biblioteka_ASP.Models;
 using Biblioteka_ASP.Repositories.Interfaces;
 using Biblioteka_ASP.Services.Interfaces;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,14 +10,15 @@ namespace Biblioteka_ASP.Services
     public class KsiazkiService : IKsiazkiService
     {
         private readonly IKsiazkiRepository _ksiazkiRepository;
+
         public KsiazkiService(IKsiazkiRepository ksiazkiRepository)
         {
             _ksiazkiRepository = ksiazkiRepository;
         }
 
-        public async Task<IEnumerable<Ksiazki>> GetAllAsync()
+        public IQueryable<Ksiazki> GetAll()
         {
-            return await _ksiazkiRepository.GetAllAsync();
+            return _ksiazkiRepository.GetAllAsync();
         }
 
         public async Task<Ksiazki> GetByIdAsync(int id)
@@ -40,23 +41,23 @@ namespace Biblioteka_ASP.Services
             await _ksiazkiRepository.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<Ksiazki>> SearchAsync(string searchString)
+        public IQueryable<Ksiazki> Search(string searchString)
         {
-            var ksiazki = await _ksiazkiRepository.GetAllAsync();
+            var ksiazki = GetAll();
             if (!string.IsNullOrEmpty(searchString))
             {
                 ksiazki = ksiazki.Where(k =>
-                    k.Tytul.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-                    k.Autor.Contains(searchString, StringComparison.OrdinalIgnoreCase)
-                ).ToList();
+                    k.Tytul.Contains(searchString) ||
+                    k.Autor.Contains(searchString)
+                );
             }
             return ksiazki;
         }
 
         public async Task<PaginatedList<Ksiazki>> GetPaginatedListAsync(int pageNumber, int pageSize, string searchString = null)
         {
-            var ksiazki = await SearchAsync(searchString);
-            return PaginatedList<Ksiazki>.Create(ksiazki, pageNumber, pageSize);
+            var query = Search(searchString);
+            return await PaginatedList<Ksiazki>.CreateAsync(query, pageNumber, pageSize);
         }
     }
 }

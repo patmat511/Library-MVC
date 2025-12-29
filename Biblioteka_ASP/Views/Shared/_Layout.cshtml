@@ -3,53 +3,146 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Biblioteka_ASP</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Biblioteka_ASP.styles.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - Biblioteka</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.1.4/css/sb-admin-2.min.css" />
+
+    <style>
+        .sidebar.bg-gradient-primary {
+            background: #6B4E71 !important; 
+        }
+
+        .sidebar .nav-item .nav-link:hover,
+        .sidebar .nav-item.active .nav-link {
+            background-color: #A68FA6 !important; 
+        }
+
+        .topbar {
+            background-color: #F8F9FC !important; 
+        }
+
+        .sticky-footer {
+            background-color: #D1D3E2 !important;
+        }
+
+        .sidebar .nav-item .nav-link {
+            color: #E8E8E8 !important; 
+        }
+
+            .sidebar .nav-item .nav-link:hover {
+                color: #FFFFFF !important; 
+            }
+
+            .sidebar .nav-item .nav-link i {
+                color: #E8E8E8 !important;
+            }
+
+            .sidebar .nav-item .nav-link:hover i {
+                color: #FFFFFF !important;
+            }
+
+        .topbar .nav-item .nav-link {
+            color: #5A5C69 !important; 
+        }
+    </style>
+
+    @RenderSection("Styles", required: false)
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Biblioteka</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Biblioteka</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Ksiazki" asp-action="Index">
+                    <i class="fas fa-fw fa-book-open"></i>
+                    <span>Książki</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Klienci" asp-action="Index">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Klienci</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Wypozyczenia" asp-action="Index">
+                    <i class="fas fa-fw fa-exchange-alt"></i>
+                    <span>Wypożyczenia</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Gatunki" asp-action="Index">
+                    <i class="fas fa-fw fa-tags"></i>
+                    <span>Gatunki</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="User" asp-action="Index">
+                    <i class="fas fa-fw fa-user-cog"></i>
+                    <span>Użytkownicy</span>
+                </a>
+            </li>
+            <hr class="sidebar-divider">
+        </ul>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                        <a class="nav-link text-dark mx-5" style="text-decoration: none;" asp-area="" asp-controller="Ksiazki" asp-action="Index">Ksiazki</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link text-dark mx-5" style="text-decoration: none;" asp-area="" asp-controller="Klienci" asp-action="Index">Klienci</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link text-dark mx-5" style="text-decoration: none;" asp-area="" asp-controller="Wypozyczenia" asp-action="Index">Wypozyczenia</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark mx-5" style="text-decoration: none;" asp-area="" asp-controller="Gatunki" asp-action="Index">Gatunki</a>
-                        </li>
-                    </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                @(User.Identity.IsAuthenticated ? User.Identity.Name : "Gość")
+                            </span>
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="/Identity/Account/Manage">Profil</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/Identity/Account/Logout">Wyloguj</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <div id="content">
+                <div class="container-fluid">
+                    <main role="main" class="pb-3">
+                        @RenderBody()
+                    </main>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Biblioteka_ASP - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        © 2025 - Biblioteka_ASP - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </div>
+                </div>
+            </footer>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    </div>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

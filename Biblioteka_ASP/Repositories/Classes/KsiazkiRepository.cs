@@ -2,7 +2,7 @@
 using Biblioteka_ASP.Models;
 using Biblioteka_ASP.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Biblioteka_ASP.Repositories.Classes
@@ -16,17 +16,18 @@ namespace Biblioteka_ASP.Repositories.Classes
             _context = context;
         }
 
-        public async Task<IEnumerable<Ksiazki>> GetAllAsync()
+        public IQueryable<Ksiazki> GetAllAsync()
         {
-            return await _context.Ksiazki
+            return _context.Ksiazki
                 .Include(k => k.Gatunki)
-                .ToListAsync();
+                .Include(k => k.Wypozyczenia);
         }
 
         public async Task<Ksiazki> GetByIdAsync(int id)
         {
             return await _context.Ksiazki
                 .Include(k => k.Gatunki)
+                .Include(k => k.Wypozyczenia)
                 .FirstOrDefaultAsync(k => k.ID_Ksiazki == id);
         }
 
@@ -44,7 +45,7 @@ namespace Biblioteka_ASP.Repositories.Classes
 
         public async Task DeleteAsync(int id)
         {
-            var ksiazka = await GetByIdAsync(id);
+            var ksiazka = await _context.Ksiazki.FindAsync(id);
             if (ksiazka != null)
             {
                 _context.Ksiazki.Remove(ksiazka);

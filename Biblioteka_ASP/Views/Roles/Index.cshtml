@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Biblioteka_ASP.ViewModels.UserViewModel>
+@{
+    ViewData["Title"] = "Zarządzanie użytkownikami";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Lista użytkowników</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Imię</th>
+                        <th>Nazwisko</th>
+                        <th>Role</th>
+                        <th>Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.Email</td>
+                            <td>@user.Imie</td>
+                            <td>@user.Nazwisko</td>
+                            <td>@string.Join(", ", user.Roles)</td>
+                            <td>
+                                <a asp-action="EditRoles" asp-route-id="@user.Id" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-edit"></i> Edytuj role
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
